@@ -1,21 +1,54 @@
-import React from "react";
-import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+import {  useEffect, useContext } from "react";
+import { useLocation } from "react-router-dom";
+import Filter from "../Filter/Filter";
+import useFormWithValidation from "../../hooks/useFormValidation";
+import CurrentUserContext from "../../context/CurrentUserContext";
 import "./SearchForm.css";
 
-const SearchForm = () => {
+const SearchForm = ({ handleSearchSubmit, getShortFilms, isShort }) => {
+  const location = useLocation();
+  const currentUser = useContext(CurrentUserContext);
+  const { values, handleChange } = useFormWithValidation();
+  useEffect(() => {
+    if (
+      location.pathname === "/movies" &&
+      localStorage.getItem(`${currentUser.email} - movieSearch`)
+    ) {
+      const searchValue = localStorage.getItem(
+        `${currentUser.email} - movieSearch`
+      );
+      values.search = searchValue;
+    }
+  }, [currentUser]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearchSubmit(values.search);
+  }
   return (
     <section className="search">
-      <form className="search__form" name="search">
+      <form
+        className="search__form"
+        name="search"
+        noValidate
+        onSubmit={handleSubmit}
+      >
         <input
           className="search__input"
           name="search"
           type="text"
           placeholder="Фильм"
+          autoComplete="off"
+          value={values.search || ""}
+          onChange={handleChange}
           required
         />
+
         <button className="search__button" type="submit"></button>
       </form>
-      <FilterCheckbox />
+      <Filter
+        isShort={isShort}
+        getShortFilms={getShortFilms}
+      />
     </section>
   );
 };
