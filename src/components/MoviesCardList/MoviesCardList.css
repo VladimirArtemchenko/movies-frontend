@@ -1,6 +1,8 @@
 .cards {
   margin: 0 auto 0;
   padding: 10px 70px 50px;
+  max-width: calc(100% - 140px);
+  width: 100%;
   background-color: #202020;
 }
 .cards__list {

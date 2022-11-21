@@ -112,11 +112,13 @@
 
 .profile__link {
   color: #ff4062;
+  background-color: transparent;
   font-size: 13px;
   font-weight: 500;
   line-height: 1.21;
   text-decoration: none;
   transition: opacity 0.2s linear;
+  border: none;
 }
 
 .profile__link:hover {

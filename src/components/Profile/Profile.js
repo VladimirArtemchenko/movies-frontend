@@ -1,36 +1,68 @@
 import "./Profile.css";
-import React from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import CurrentUserContext from "../../context/CurrentUserContext";
 
-const Profile = () => {
+const Profile = ({ signOut, editInfo }) => {
+  const currentUser = useContext(CurrentUserContext);
+  const [email, setEmail] = useState(currentUser.email);
+  const [lastEmail, setLastEmail] = useState(currentUser.email);
+  const [name, setName] = useState(currentUser.name);
+  const [lastName, setLastName] = useState(currentUser.name);
+  const [isVisibleButton, setVisibleButton] = useState(false);
+  const changeName = (evt) => {
+    const value = evt.target.value;
+    setName(value);
+    if (value !== lastName) {
+      setVisibleButton(true);
+    } else {
+      setVisibleButton(false);
+    }
+  }
+  const changeEmail = (evt) => {
+    const value = evt.target.value;
+    setEmail(value);
+    if (value !== lastEmail) {
+      setVisibleButton(true);
+    } else {
+      setVisibleButton(false);
+    }
+  }
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    editInfo({ name, email });
+    setVisibleButton(false);
+    setLastName(name);
+    setLastEmail(email);
+  }
+
   return (
     <section className="profile">
-      <form className="profile__form">
-        <h3 className="profile__greeting">Привет, DarthVaider!</h3>
+      <form className="profile__form" onSubmit={handleSubmit}>
+        <h3 className="profile__greeting">Привет, {name}!</h3>
         <div className="profile__inputs">
           <p className="profile__text">Имя</p>
           <div className="profile__area profile__area_type_name">
             <input
               className="profile__settings"
-              defaultValue="DarthVaider"
-              required
+              value={name}
+              onChange={changeName}
             />
           </div>
           <div className="profile__area profile__area_type_email">
             <input
               className="profile__settings"
-              defaultValue="zvezda-smerti666@yandex.ru"
-              required
+              value={email}
+              onChange={changeEmail}
             />
           </div>
           <p className="profile__text">E-mail</p>
         </div>
-        <Link to="/profile" className="profile__button">
+        <button className="profile__button" disabled={!isVisibleButton}>
           Редактировать
-        </Link>
-        <Link to="/" className="profile__link">
+        </button>
+        <button className="profile__link" type="button" onClick={signOut}>
           Выйти из аккаунта
-        </Link>
+        </button>
       </form>
     </section>
   );

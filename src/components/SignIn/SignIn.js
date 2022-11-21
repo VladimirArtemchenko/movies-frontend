@@ -1,13 +1,14 @@
 import "../Form/Form.css";
 import { useState } from "react";
-import isEmail from "validator/es/lib/isEmail";
 import { Link } from "react-router-dom";
 import header_logo from "../../images/header_logo.svg";
+import isEmail from "validator/es/lib/isEmail";
 
-const Register = ({ signUp }) => {
+const Login = ({ signIn }) => {
   const [formValues, setFormValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
+
   const changeForm = (evt) => {
     const name = evt.target.name;
     const value = evt.target.value;
@@ -25,7 +26,7 @@ const Register = ({ signUp }) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    signUp(formValues);
+    signIn(formValues);
   };
 
   return (
@@ -38,22 +39,9 @@ const Register = ({ signUp }) => {
             alt="Логотип Movies Explorer"
           ></img>
         </Link>
-        <h2 className="form__title">Добро пожаловать!</h2>
+        <h2 className="form__title">Рады видеть!</h2>
         <form className="form__inputs" onSubmit={handleSubmit}>
           <div className="form__items">
-            <label className="form__item">
-              <p className="form__item-text">Имя</p>
-              <input
-                className="form__field"
-                name="name"
-                placeholder="Введите имя"
-                value={formValues.name || ""}
-                onChange={changeForm}
-                required
-              />
-              <p className="form__error">Что-то пошло не так...</p>
-            </label>
-
             <label className="form__item">
               <p className="form__item-text">E-mail</p>
               <input
@@ -104,13 +92,13 @@ const Register = ({ signUp }) => {
             type="submit"
             disabled={!isValid ? true : ""}
           >
-            Зарегистрироваться
+            Войти
           </button>
         </form>
         <p className="form__text">
-          Уже зарегистрированы?
-          <Link to="/signin" className="form__link">
-            Войти
+          Ещё не зарегистрированы?
+          <Link to="/signup" className="form__link">
+            Регистрация
           </Link>
         </p>
       </div>
@@ -118,4 +106,4 @@ const Register = ({ signUp }) => {
   );
 };
 
-export default Register;
+export default Login;
