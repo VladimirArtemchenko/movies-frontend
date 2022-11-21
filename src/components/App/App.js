@@ -78,28 +78,21 @@ const App = () => {
   }, [isLogin]);
 
   useEffect(() => {
-    console.log(isLogin);
-    console.log(currentUser);
-    const token = localStorage.getItem("token");
-    console.log({token});
     if (isLogin && currentUser) {
       const token = localStorage.getItem("token");
       mainApi
         .getMyMovies(token)
         .then((data) => {
-          console.log({data});
-
           const UserMoviesList = data.filter(
             (item) => item.owner === currentUser._id
           );
-          console.log({UserMoviesList});
           setMoviesList(UserMoviesList);
         })
         .catch((err) =>
         setInfoModal({
             isOpen: true,
             successful: false,
-            text: "err1",
+            text: err,
           })
         );
     }

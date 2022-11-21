@@ -1,4 +1,4 @@
-import {  useEffect, useContext } from "react";
+import {  useEffect, useContext,useState } from "react";
 import { useLocation } from "react-router-dom";
 import Filter from "../Filter/Filter";
 import useFormWithValidation from "../../hooks/useFormValidation";
@@ -9,6 +9,7 @@ const SearchForm = ({ handleSearchSubmit, getShortFilms, isShort }) => {
   const location = useLocation();
   const currentUser = useContext(CurrentUserContext);
   const { values, handleChange } = useFormWithValidation();
+  const [errors, setErrors] = useState({});
   useEffect(() => {
     if (
       location.pathname === "/movies" &&
@@ -22,16 +23,26 @@ const SearchForm = ({ handleSearchSubmit, getShortFilms, isShort }) => {
   }, [currentUser]);
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!e.target[0].value) {
+        e.target[0].setCustomValidity("Нужно ввести ключевое слово");
+        setErrors({ ...errors, [e.target[0].name]: e.target[0].validationMessage });
+        return
+      } else {
+        e.target[0].setCustomValidity("");
+        setErrors({ ...errors, [e.target[0].name]: e.target[0].validationMessage });
+    }
     handleSearchSubmit(values.search);
   }
   return (
     <section className="search">
-      <form
+       <label className="form__item">
+        <form
         className="search__form"
         name="search"
         noValidate
         onSubmit={handleSubmit}
       >
+
         <input
           className="search__input"
           name="search"
@@ -42,9 +53,19 @@ const SearchForm = ({ handleSearchSubmit, getShortFilms, isShort }) => {
           onChange={handleChange}
           required
         />
-
         <button className="search__button" type="submit"></button>
+
       </form>
+      <p
+                className={`form__error ${
+                  errors.search ? "form__error-display" : ""
+                }`}
+              >
+                {errors.search}
+              </p>
+
+       </label>
+
       <Filter
         isShort={isShort}
         getShortFilms={getShortFilms}
