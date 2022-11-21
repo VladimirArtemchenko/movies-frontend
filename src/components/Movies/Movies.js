@@ -28,6 +28,7 @@ export default function Movies({
   }, [currentUser]);
 
   useEffect(() => {
+
     if (localStorage.getItem(`${currentUser.email} - movies`)) {
       const movies = JSON.parse(
         localStorage.getItem(`${currentUser.email} - movies`)
@@ -64,6 +65,7 @@ export default function Movies({
   }
 
   const handleSearchSubmit = (inputValue) => {
+    if(!inputValue) return
     localStorage.setItem(`${currentUser.email} - movieSearch`, inputValue);
     localStorage.setItem(`${currentUser.email} - isShort`, isShort);
     if (isAllMovies.length === 0) {
