@@ -47,6 +47,10 @@ export default function Movies({
   }, [currentUser]);
 
   const handleSetFilteredMovies = (movies, query, isFiltering) => {
+    console.log({movies});
+    console.log({query});
+    console.log({isFiltering});
+
     const moviesList = filtering(movies, query, isFiltering);
     if (moviesList.length === 0) {
       setInfoModal({isOpen: true,successful: false,text: "Ничего не найдено.",});
@@ -62,12 +66,13 @@ export default function Movies({
       `${currentUser.email} - movies`,
       JSON.stringify(moviesList)
     );
+
   }
 
-  const handleSearchSubmit = (inputValue) => {
+  const handleSearchSubmit = (inputValue,isShort) => {
     if(!inputValue) return
     localStorage.setItem(`${currentUser.email} - movieSearch`, inputValue);
-    localStorage.setItem(`${currentUser.email} - isShort`, isShort);
+    // localStorage.setItem(`${currentUser.email} - isShort`, isShort);
     if (isAllMovies.length === 0) {
       setIsLoading(true);
       movieApi
@@ -91,16 +96,17 @@ export default function Movies({
     } else {
       handleSetFilteredMovies(isAllMovies, inputValue, isShort);
     }
+
   }
 
   const getShortFilms = () => {
     setIsShort(!isShort);
     if (!isShort) {
       setFilteredMovies(filteringShort(initialMovies));
-      handleSetFilteredMovies(isAllMovies,localStorage.getItem(`${currentUser.email} - movieSearch`),!isShort)
+      handleSearchSubmit(localStorage.getItem(`${currentUser.email} - movieSearch`),!isShort)
     } else {
       setFilteredMovies(initialMovies);
-      handleSetFilteredMovies(isAllMovies,localStorage.getItem(`${currentUser.email} - movieSearch`),!isShort)
+      handleSearchSubmit(localStorage.getItem(`${currentUser.email} - movieSearch`),!isShort)
     }
     localStorage.setItem(`${currentUser.email} - isShort`, !isShort);
   }

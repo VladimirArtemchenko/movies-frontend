@@ -31,7 +31,7 @@ const SearchForm = ({ handleSearchSubmit, getShortFilms, isShort }) => {
         e.target[0].setCustomValidity("");
         setErrors({ ...errors, [e.target[0].name]: e.target[0].validationMessage });
     }
-    handleSearchSubmit(values.search);
+    handleSearchSubmit(values.search,isShort);
   }
   return (
     <section className="search">
