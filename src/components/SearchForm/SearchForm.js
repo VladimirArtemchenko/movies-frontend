@@ -23,7 +23,7 @@ const SearchForm = ({ handleSearchSubmit, getShortFilms, isShort }) => {
   }, [currentUser]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!e.target[0].value) {
+    if (!e.target[0].value && location.pathname === "/movies") {
         e.target[0].setCustomValidity("Нужно ввести ключевое слово");
         setErrors({ ...errors, [e.target[0].name]: e.target[0].validationMessage });
         return
@@ -51,7 +51,6 @@ const SearchForm = ({ handleSearchSubmit, getShortFilms, isShort }) => {
           autoComplete="off"
           value={values.search || ""}
           onChange={handleChange}
-          required
         />
         <button className="search__button" type="submit"></button>
 

@@ -97,8 +97,10 @@ export default function Movies({
     setIsShort(!isShort);
     if (!isShort) {
       setFilteredMovies(filteringShort(initialMovies));
+      handleSetFilteredMovies(isAllMovies,localStorage.getItem(`${currentUser.email} - movieSearch`),!isShort)
     } else {
       setFilteredMovies(initialMovies);
+      handleSetFilteredMovies(isAllMovies,localStorage.getItem(`${currentUser.email} - movieSearch`),!isShort)
     }
     localStorage.setItem(`${currentUser.email} - isShort`, !isShort);
   }
